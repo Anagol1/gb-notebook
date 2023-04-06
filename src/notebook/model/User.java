@@ -6,7 +6,7 @@ public class User {
     private String lastName;
     private String phone;
 
-    public User(Builder builder) {
+    private User(Builder builder) {
         this.id = builder.id;
         this.firstName = builder.firstName;
         this.lastName = builder.lastName;
