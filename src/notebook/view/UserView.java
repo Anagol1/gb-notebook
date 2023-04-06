@@ -4,6 +4,7 @@ import notebook.controller.UserController;
 import notebook.model.User;
 import notebook.util.Commands;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class UserView {
@@ -25,7 +26,11 @@ public class UserView {
                     String firstName = prompt("Имя: ");
                     String lastName = prompt("Фамилия: ");
                     String phone = prompt("Номер телефона: ");
-                    userController.saveUser(new User(firstName, lastName, phone));
+                    User newUser = User.builder()
+                            .firstName(firstName)
+                            .lastName(lastName)
+                            .phone(phone).build();
+                    userController.saveUser(newUser);
                     break;
                 case READ:
                     String id = prompt("Идентификатор пользователя: ");
@@ -37,6 +42,23 @@ public class UserView {
                         throw new RuntimeException(e);
                     }
                     break;
+                case LIST:
+                    List<User> users = userController.getAllUsers();
+                        for (User user: users
+                             ) {
+                            System.out.println(user);
+                        }
+                        break;
+
+                case UPDATE:
+                    String userId = prompt("Введите user id: ");
+                    userController.updateUser(userId, createUser());
+                    break;
+
+                case DELETE:
+                    String userIdDel = prompt("Введите user id: ");
+                    userController.deleteUser(userIdDel);
+                    break;
             }
         }
     }
@@ -45,5 +67,17 @@ public class UserView {
         Scanner in = new Scanner(System.in);
         System.out.print(message);
         return in.nextLine();
+    }
+    private User createUser() {
+        String firstName = prompt("Имя: ");
+        String lastName = prompt("Фамилия: ");
+        String phone = prompt("Номер телефона: ");
+//        return new User(firstName, lastName, phone);
+
+        return User.builder()
+                .firstName(firstName)
+                .lastName(lastName)
+                .phone(phone)
+                .build();
     }
 }
